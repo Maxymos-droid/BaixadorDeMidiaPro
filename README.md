@@ -26,7 +26,7 @@ Não é necessário instalar Python, yt-dlp ou FFmpeg manualmente — o próprio
 
 1. Baixe este repositório (botão **Code > Download ZIP**) ou clone-o:
    ```bash
-   git clone https://github.com/SEU-USUARIO/baixador-de-midia-pro.git
+   git clone https://github.com/SEU-USUARIO/BaixadorDeMidiaPro.git
    ```
 2. Extraia a pasta, caso tenha baixado o `.zip`.
 3. Dê **dois cliques** em `setup.bat`.
