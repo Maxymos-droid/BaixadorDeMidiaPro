@@ -1,6 +1,6 @@
 # 🎵 Baixador de Mídia Inteligente Pro
 
-Uma interface gráfica simples em **PowerShell + Windows Forms** para baixar vídeos, playlists e áudios do YouTube (e outros sites suportados pelo [yt-dlp](https://github.com/yt-dlp/yt-dlp)), com seleção individual de itens, escolha de formato (MP3/MP4) e log de progresso em tempo real.
+Uma interface gráfica simples em **PowerShell + Windows Forms** para baixar vídeos, playlists e áudios (e outros sites suportados pelo [yt-dlp](https://github.com/yt-dlp/yt-dlp)), com seleção individual de itens, escolha de formato (MP3/MP4) e log de progresso em tempo real.
 
 Não é necessário instalar Python, yt-dlp ou FFmpeg manualmente — o próprio script cuida disso na primeira execução.
 
@@ -52,9 +52,10 @@ Não é necessário ter Python, yt-dlp ou FFmpeg pré-instalados — tudo é bai
 ## 🗂️ Estrutura do projeto
 
 ```
-baixador-de-midia-pro/
-├── setup.bat     # Script principal (batch + PowerShell em um único arquivo)
-├── icone.ico           # Ícone usado na janela e no atalho da Área de Trabalho
+BaixadorDeMidiaPro/
+├── setup.bat                    # Launcher (abre o programa de forma oculta)
+├── BaixadorDeMidiaPro.ps1       # Código principal (interface + lógica)
+├── icone.ico                    # Ícone da janela e do atalho
 ├── README.md
 ├── LICENSE
 └── .gitignore
