@@ -11,13 +11,16 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "$scriptPath = '%~f0'; In
 exit /b
 #>
 
-# --- C�DIGO POWERSHELL ABAIXO ---
+# --------------------------------------------------------------------------
+# --- CÓDIGO POWERSHELL ABAIXO ---
+# --------------------------------------------------------------------------
+
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # --------------------------------------------------------------------------
-# CAMINHOS E CONFIGURA��O GLOBAL
+# CAMINHOS E CONFIGURAÇÃO GLOBAL
 # --------------------------------------------------------------------------
 if (-not $scriptPath) { $scriptPath = $MyInvocation.MyCommand.Path }
 $scriptDir  = Split-Path $scriptPath -Parent
@@ -32,7 +35,7 @@ $global:destFolder = ""
 if (-not (Test-Path $appDataDir)) { New-Item -ItemType Directory -Path $appDataDir -Force | Out-Null }
 if (-not (Test-Path $binDir))     { New-Item -ItemType Directory -Path $binDir -Force | Out-Null }
 
-# Garante que nossas c�pias locais tenham prioridade nesta sess�o
+# Garante que nossas cópias locais tenham prioridade nesta sessão
 $env:PATH = "$binDir;$env:PATH"
 
 if (Test-Path $configFile) {
@@ -40,8 +43,9 @@ if (Test-Path $configFile) {
 }
 
 # --------------------------------------------------------------------------
-# INSTALA��O SILENCIOSA DE COMPONENTES (yt-dlp e FFmpeg)
+# INSTALAÇÃO SILENCIOSA DE COMPONENTES (yt-dlp e FFmpeg)
 # --------------------------------------------------------------------------
+
 function Test-Ferramenta($nome) {
     return $null -ne (Get-Command $nome -ErrorAction SilentlyContinue)
 }
@@ -69,7 +73,7 @@ function Show-Splash($mensagemInicial) {
 }
 
 function Instalar-Componentes {
-    $splash = Show-Splash "Preparando o Baixador de M�dia Pro...`r`nIsso s� acontece na primeira execu��o."
+    $splash = Show-Splash "Preparando o Baixador de Mídia Pro...`r`nIsso só acontece na primeira execução."
     try {
         if (-not (Test-Ferramenta 'yt-dlp')) {
             $splash.Controls['lblStatus'].Text = "Baixando yt-dlp...`r`nAguarde, isso pode levar alguns segundos."
@@ -107,8 +111,8 @@ function Instalar-Componentes {
     }
     catch {
         [Windows.Forms.MessageBox]::Show(
-            "N�o foi poss�vel baixar automaticamente todos os componentes.`r`n`r`nDetalhe: $($_.Exception.Message)`r`n`r`nVerifique sua conex�o com a internet, ou instale manualmente o yt-dlp e o FFmpeg e adicione-os ao PATH do Windows.",
-            'Aviso de instala��o', 'OK', 'Warning'
+            "Não foi possível baixar automaticamente todos os componentes.`r`n`r`nDetalhe: $($_.Exception.Message)`r`n`r`nVerifique sua conexão com a internet, ou instale manualmente o yt-dlp e o FFmpeg e adicione-os ao PATH do Windows.",
+            'Aviso de instalação', 'OK', 'Warning'
         ) | Out-Null
     }
     finally {
@@ -119,7 +123,7 @@ function Instalar-Componentes {
 function Criar-Atalho {
     try {
         $desktop = [Environment]::GetFolderPath('Desktop')
-        $atalhoPath = Join-Path $desktop 'Baixador de M�dia Pro.lnk'
+        $atalhoPath = Join-Path $desktop 'Baixador de Mídia Pro.lnk'
         if (Test-Path $atalhoPath) { return }
 
         $wsh = New-Object -ComObject WScript.Shell
@@ -129,11 +133,11 @@ function Criar-Atalho {
         if (Test-Path $iconPath) {
             $atalho.IconLocation = "$iconPath,0"
         }
-        $atalho.Description = 'Baixador de M�dia Inteligente Pro'
+        $atalho.Description = 'Baixador de Mídia Inteligente Pro'
         $atalho.Save()
     }
     catch {
-        # Falha silenciosa: a aus�ncia do atalho n�o deve travar o programa
+        # Falha silenciosa: a ausência do atalho não deve travar o programa
     }
 }
 
@@ -142,15 +146,21 @@ if (-not (Test-Path $flagFile)) {
     Criar-Atalho
 }
 
-# Defini  o de Fontes Maiores
+# --------------------------------------------------------------------------
+# Definição de Fontes Maiores
+# --------------------------------------------------------------------------
+
 $fontPrincipal = New-Object Drawing.Font('Segoe UI', 11)
 $fontNegrito = New-Object Drawing.Font('Segoe UI', 11, [Drawing.FontStyle]::Bold)
 $fontTitulo = New-Object Drawing.Font('Segoe UI', 12, [Drawing.FontStyle]::Bold)
 $fontBotoes = New-Object Drawing.Font('Segoe UI', 10, [Drawing.FontStyle]::Bold)
 
-# Interface Gr fica Redimensionada
+# --------------------------------------------------------------------------
+# Interface Gráfica Redimensionada
+# --------------------------------------------------------------------------
+
 $form = New-Object Windows.Forms.Form
-$form.Text = 'Baixador de M dia Inteligente Pro'
+$form.Text = 'Baixador de Mídia Inteligente Pro'
 $form.Size = New-Object Drawing.Size(600, 750)
 $form.StartPosition = 'CenterScreen'
 $form.FormBorderStyle = 'FixedDialog'
@@ -162,10 +172,12 @@ if (Test-Path $iconPath) {
 $form.Add_FormClosing({
     [System.Environment]::Exit(0)
 })
-
+# --------------------------------------------------------------------------
 # Campo de entrada do Link
+# --------------------------------------------------------------------------
+
 $label_link = New-Object Windows.Forms.Label
-$label_link.Text = 'Cole o link do v deo ou playlist aqui:'
+$label_link.Text = 'Cole o link do vídeo ou playlist aqui:'
 $label_link.Font = $fontTitulo
 $label_link.Location = New-Object Drawing.Point(20, 15)
 $label_link.Size = New-Object Drawing.Size(400, 25)
@@ -177,17 +189,23 @@ $txt_link.Location = New-Object Drawing.Point(20, 45)
 $txt_link.Size = New-Object Drawing.Size(390, 28)
 $form.Controls.Add($txt_link)
 
-# Bot o Analisar Link com  cone Seguro
+# --------------------------------------------------------------------------
+# Botão Analisar Link com Ícone Seguro
+# --------------------------------------------------------------------------
+
 $btn_load = New-Object Windows.Forms.Button
-$btn_load.Text = 'Procurar'
+$btn_load.Text = ' Procurar ... '
 $btn_load.Font = $fontBotoes
 $btn_load.Location = New-Object Drawing.Point(430, 44)
 $btn_load.Size = New-Object Drawing.Size(130, 30)
 $form.Controls.Add($btn_load)
 
+# --------------------------------------------------------------------------
 # Grupo do Formato
+# --------------------------------------------------------------------------
+
 $group_box = New-Object Windows.Forms.GroupBox
-$group_box.Text = ' Configura  es de Sa da '
+$group_box.Text = ' Configurações de Saída '
 $group_box.Font = $fontNegrito
 $group_box.Location = New-Object Drawing.Point(20, 90)
 $group_box.Size = New-Object Drawing.Size(540, 75)
@@ -201,16 +219,19 @@ $rb_mp3.Checked = $true
 $group_box.Controls.Add($rb_mp3)
 
 $rb_mp4 = New-Object Windows.Forms.RadioButton
-$rb_mp4.Text = '(V deo) MP4'
+$rb_mp4.Text = '(Vídeo) MP4'
 $rb_mp4.Font = $fontPrincipal
 $rb_mp4.Location = New-Object Drawing.Point(200, 30)
 $rb_mp4.Size = New-Object Drawing.Size(150, 25)
 $group_box.Controls.Add($rb_mp4)
 $form.Controls.Add($group_box)
 
-# Lista de Sele  o das M sicas
+# --------------------------------------------------------------------------
+# Lista de Seleção das Músicas
+# --------------------------------------------------------------------------
+
 $label_list = New-Object Windows.Forms.Label
-$label_list.Text = 'M sicas encontradas (Desmarque o que n o quiser):'
+$label_list.Text = 'Músicas encontradas (Desmarque o que não quiser):'
 $label_list.Font = $fontTitulo
 $label_list.Location = New-Object Drawing.Point(20, 185)
 $label_list.Size = New-Object Drawing.Size(450, 25)
@@ -223,7 +244,10 @@ $list_box.Size = New-Object Drawing.Size(540, 150)
 $list_box.CheckOnClick = $true
 $form.Controls.Add($list_box)
 
-# Bot es r pidos
+# --------------------------------------------------------------------------
+# Botões rápidos
+# --------------------------------------------------------------------------
+
 $btn_select_all = New-Object Windows.Forms.Button
 $btn_select_all.Text = '[+] Marcar Todos'
 $btn_select_all.Font = $fontBotoes
@@ -233,14 +257,17 @@ $btn_select_all.Add_Click({ for($i=0; $i -lt $list_box.Items.Count; $i++) { $lis
 $form.Controls.Add($btn_select_all)
 
 $btn_unselect_all = New-Object Windows.Forms.Button
-$btn_unselect_all.Text = '[-] Limpar Sele  o'
+$btn_unselect_all.Text = '[-] Limpar Seleção'
 $btn_unselect_all.Font = $fontBotoes
 $btn_unselect_all.Location = New-Object Drawing.Point(170, 380)
 $btn_unselect_all.Size = New-Object Drawing.Size(140, 30)
 $btn_unselect_all.Add_Click({ for($i=0; $i -lt $list_box.Items.Count; $i++) { $list_box.SetItemChecked($i, $false) } })
 $form.Controls.Add($btn_unselect_all)
 
+# --------------------------------------------------------------------------
 # Pasta de Destino memorizada
+# --------------------------------------------------------------------------
+
 $label_folder = New-Object Windows.Forms.Label
 $label_folder.Text = "Pasta atual: $global:destFolder"
 $label_folder.Font = $fontPrincipal
@@ -263,7 +290,10 @@ $btn_folder.Add_Click({
 })
 $form.Controls.Add($btn_folder)
 
+# --------------------------------------------------------------------------
 # Terminal de Logs integrado
+# --------------------------------------------------------------------------
+
 $label_log = New-Object Windows.Forms.Label
 $label_log.Text = ' Progresso do Terminal:'
 $label_log.Font = $fontTitulo
@@ -282,7 +312,10 @@ $txt_log.ForeColor = [System.Drawing.Color]::LimeGreen
 $txt_log.Font = New-Object Drawing.Font('Consolas', 10)
 $form.Controls.Add($txt_log)
 
-# Bot o Baixar Destacado
+# --------------------------------------------------------------------------
+# Botão Baixar Destacado
+# --------------------------------------------------------------------------
+
 $btn_download = New-Object Windows.Forms.Button
 $btn_download.Text = 'BAIXAR AGORA'
 $btn_download.Font = New-Object Drawing.Font('Segoe UI', 12, [Drawing.FontStyle]::Bold)
@@ -290,14 +323,17 @@ $btn_download.Location = New-Object Drawing.Point(390, 660)
 $btn_download.Size = New-Object Drawing.Size(170, 40)
 $form.Controls.Add($btn_download)
 
-# --- FASE 1: EXTRAIR OS T TULOS ---
+# --------------------------------------------------------------------------
+# --- FASE 1: EXTRAIR OS TÍTULOS ---
+# --------------------------------------------------------------------------
+
 $btn_load.Add_Click({
     if ($txt_link.Text -eq '') {
-        [Windows.Forms.MessageBox]::Show('Por favor, insira um link do YouTube antes de analisar.', 'Aviso')
+        [Windows.Forms.MessageBox]::Show('Por favor, insira um link antes de analisar.', 'Aviso')
         return
     }
     $btn_load.Enabled = $false
-    $txt_log.Text = "Conectando ao YouTube... Mapeando playlist.`r`n"
+    $txt_log.Text = "Conectando... Mapeando playlist.`r`n"
     $list_box.Items.Clear()
     [System.Windows.Forms.Application]::DoEvents()
 
@@ -319,14 +355,17 @@ $btn_load.Add_Click({
             }
         }
     }
-    $txt_log.AppendText("An lise conclu da! Encontrados: $($list_box.Items.Count) item(ns).`r`n")
+    $txt_log.AppendText("Análise concluída! Encontrados: $($list_box.Items.Count) item(ns).`r`n")
     $btn_load.Enabled = $true
 })
 
-# --- FASE 2: INSTALAR VIA  NDICES DA PLAYLIST ---
+# --------------------------------------------------------------------------
+# --- FASE 2: INSTALAR VIA ÍNDICES DA PLAYLIST ---
+# --------------------------------------------------------------------------
+
 $btn_download.Add_Click({
     if ($list_box.CheckedItems.Count -eq 0) {
-        [Windows.Forms.MessageBox]::Show('Selecione pelo menos um v deo na lista marcando a caixinha.', 'Aviso')
+        [Windows.Forms.MessageBox]::Show('Selecione pelo menos um vídeo na lista marcando a caixinha.', 'Aviso')
         return
     }
     if ($global:destFolder -eq '') {
@@ -384,7 +423,7 @@ $btn_download.Add_Click({
         }
     }
 
-    [Windows.Forms.MessageBox]::Show('Downloads selecionados conclu dos com sucesso!', 'Sucesso', 'OK', 'Information')
+    [Windows.Forms.MessageBox]::Show('Downloads selecionados concluídos com sucesso!', 'Sucesso', 'OK', 'Information')
     $txt_log.Text = "Pronto para receber um novo link."
     $list_box.Items.Clear()
     $txt_link.Text = ""
@@ -395,3 +434,4 @@ $btn_download.Add_Click({
 })
 
 $form.ShowDialog() | Out-Null
+
