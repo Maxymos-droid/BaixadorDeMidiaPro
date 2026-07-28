@@ -29,7 +29,7 @@ Não é necessário instalar Python, yt-dlp ou FFmpeg manualmente — o próprio
    git clone https://github.com/SEU-USUARIO/baixador-de-midia-pro.git
    ```
 2. Extraia a pasta, caso tenha baixado o `.zip`.
-3. Dê **dois cliques** em `baixador_v5.bat`.
+3. Dê **dois cliques** em `setup.bat`.
 4. Na primeira execução, aguarde a configuração automática (o programa baixa o `yt-dlp` e o `FFmpeg` sozinho — isso só acontece uma vez e requer conexão com a internet).
 5. Um atalho **"Baixador de Mídia Pro"** será criado na sua Área de Trabalho. Use-o nas próximas vezes.
 6. Cole o link, clique em **Procurar**, marque o que quiser baixar, escolha o formato e clique em **BAIXAR AGORA**.
@@ -53,7 +53,7 @@ Não é necessário ter Python, yt-dlp ou FFmpeg pré-instalados — tudo é bai
 
 ```
 baixador-de-midia-pro/
-├── baixador_v5.bat     # Script principal (batch + PowerShell em um único arquivo)
+├── setup.bat     # Script principal (batch + PowerShell em um único arquivo)
 ├── icone.ico           # Ícone usado na janela e no atalho da Área de Trabalho
 ├── README.md
 ├── LICENSE
