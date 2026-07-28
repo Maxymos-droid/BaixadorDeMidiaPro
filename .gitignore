@@ -1,7 +1,8 @@
 # Arquivos de configuração gerados pelo usuário
 yt_dlp_config.txt
 
-# Componentes baixados automaticamente (não devem ir para o repositório)
+# Flag de instalação e componentes baixados automaticamente
+.instalado
 bin/
 *.exe
 
@@ -10,11 +11,13 @@ bin/
 *.mp4
 *.m4a
 *.webm
+*.mkv
 
-# Arquivos temporários do Windows/PowerShell
+# Arquivos temporários do Windows / PowerShell
 *.log
 Thumbs.db
 desktop.ini
+*.lnk
 
 # Pastas de build/extração temporárias
 ffmpeg_temp*/
@@ -25,3 +28,8 @@ ffmpeg_temp*.zip
 .idea/
 *.suo
 *.user
+*.swp
+*~
+
+# Sistema operacional
+.DS_Store
