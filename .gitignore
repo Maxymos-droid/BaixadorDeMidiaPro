@@ -1,0 +1,27 @@
+# Arquivos de configuração gerados pelo usuário
+yt_dlp_config.txt
+
+# Componentes baixados automaticamente (não devem ir para o repositório)
+bin/
+*.exe
+
+# Downloads de mídia de teste
+*.mp3
+*.mp4
+*.m4a
+*.webm
+
+# Arquivos temporários do Windows/PowerShell
+*.log
+Thumbs.db
+desktop.ini
+
+# Pastas de build/extração temporárias
+ffmpeg_temp*/
+ffmpeg_temp*.zip
+
+# IDE / editores
+.vscode/
+.idea/
+*.suo
+*.user
